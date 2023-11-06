@@ -1,10 +1,10 @@
 info.app:
-  name: HMPPS Template Kotlin
+  name: Hmpps Unused Deductions Listener
   version: 1.0
 
 spring:
   application:
-    name: hmpps-template-kotlin
+    name: hmpps-unused-deductions-listener
   codec:
     max-in-memory-size: 10MB
 
