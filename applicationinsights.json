@@ -1,6 +1,6 @@
 {
   "role": {
-    "name": "hmpps-template-kotlin"
+    "name": "hmpps-unused-deductions-listener"
   },
   "customDimensions": {
     "service.version": "${BUILD_NUMBER}"
