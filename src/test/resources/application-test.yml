@@ -4,3 +4,31 @@ server:
 management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
+
+api:
+  base:
+    url:
+      oauth: http://localhost:8090/auth
+
+adjustments:
+  api:
+    url: http://localhost:8334
+
+calculate-release-dates:
+  api:
+    url: http://localhost:8333
+
+
+hmpps.sqs:
+  provider: localstack
+  queues:
+    unuseddeductions:
+      queueName: "unuseddeductions-${random.uuid}"
+      dlqName: "unuseddeductions-dlq-${random.uuid}"
+      subscribeTopicId: domainevents
+      subscribeFilter: "{\"eventType\":[\"release-date-adjustments.adjustment.inserted\", \"release-date-adjustments.adjustment.updated\", \"release-date-adjustments.adjustment.deleted\"]}"
+      dlqMaxReceiveCount: 3
+      visibilityTimeout: 120
+  topics:
+    domainevents:
+      arn: arn:aws:sns:eu-west-2:000000000000:${random.uuid}
