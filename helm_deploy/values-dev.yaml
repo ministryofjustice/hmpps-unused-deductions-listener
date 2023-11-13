@@ -9,6 +9,8 @@ generic-service:
 
   env:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
+    ADJUSTMENTS_API_URL: https://adjustments-api-dev.hmpps.service.justice.gov.uk
+    CALCULATERELEASEDATES_API_URL: https://calculate-release-dates-api-dev.hmpps.service.justice.gov.uk
 
 # CloudPlatform AlertManager receiver to route prometheus alerts to slack
 # See https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts
