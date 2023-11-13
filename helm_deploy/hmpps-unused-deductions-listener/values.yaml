@@ -3,6 +3,8 @@ generic-service:
   nameOverride: hmpps-unused-deductions-listener
   productId: "UNASSIGNED"   # productId for the product that this belongs too, i.e. DPS001, see README.md for details
 
+  serviceAccountName: hmpps-adjustments
+
   replicaCount: 4
 
   image:
