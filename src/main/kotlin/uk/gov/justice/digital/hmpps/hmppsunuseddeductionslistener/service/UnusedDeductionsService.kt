@@ -49,8 +49,8 @@ class UnusedDeductionsService(
 
   private fun setEffectiveDays(unusedDeductions: Int, deductions: List<Adjustment>) {
     var remainingDeductions = unusedDeductions
-    // Tagged bail first.
-    deductions.sortedByDescending { it.adjustmentType.name }.forEach {
+    // Remand becomes unused first..
+    deductions.sortedBy { it.adjustmentType.name }.forEach {
       val days = if (it.adjustmentType == AdjustmentType.TAGGED_BAIL) {
         it.days!!
       } else {
@@ -86,6 +86,7 @@ class UnusedDeductionsService(
         adjustmentsApiClient.createAdjustment(
           aDeduction.copy(
             id = null,
+            fromDate = null,
             toDate = null,
             days = unusedDeductions,
             adjustmentType = AdjustmentType.UNUSED_DEDUCTIONS,

@@ -40,8 +40,8 @@ class UnusedDeductionsServiceTest {
 
     unusedDeductionsService.handleMessage(AdjustmentEvent(AdditionalInformation(id = UUID.randomUUID().toString(), offenderNo = person, source = "DPS", false)))
 
-    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(taggedBail.id!!, 0, person))
-    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(remand.id!!, 80, person))
+    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(taggedBail.id!!, 80, person))
+    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(remand.id!!, 0, person))
     verify(adjustmentsApiClient).updateAdjustment(unusedDeductions.copy(days = 100))
   }
 
@@ -60,12 +60,13 @@ class UnusedDeductionsServiceTest {
 
     unusedDeductionsService.handleMessage(AdjustmentEvent(AdditionalInformation(id = UUID.randomUUID().toString(), offenderNo = person, source = "DPS", false)))
 
-    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(taggedBail.id!!, 0, person))
-    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(remand.id!!, 80, person))
+    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(taggedBail.id!!, 80, person))
+    verify(adjustmentsApiClient).updateEffectiveDays(AdjustmentEffectiveDays(remand.id!!, 0, person))
     verify(adjustmentsApiClient).createAdjustment(
       remand.copy(
         id = null,
         toDate = null,
+        fromDate = null,
         days = 100,
         adjustmentType = AdjustmentType.UNUSED_DEDUCTIONS,
       ),
