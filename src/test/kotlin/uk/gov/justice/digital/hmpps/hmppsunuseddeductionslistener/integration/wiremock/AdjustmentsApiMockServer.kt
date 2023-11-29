@@ -8,8 +8,9 @@ import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
-import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.listener.ADJUSTMENT_ID
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.listener.OFFENDER_NUMBER
+import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.listener.REMAND_ID
+import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.listener.TAGGED_BAIL_ID
 
 /*
     This class mocks the adjustments api.
@@ -50,7 +51,7 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
               """
              [
    {
-      "id":"29044a3c-6261-4681-af9e-ef2a84c51a22",
+      "id":"$REMAND_ID",
       "bookingId":1204935,
       "sentenceSequence":1,
       "person":"A1032DZ",
@@ -69,7 +70,7 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
       "daysBetween":11
    },
    {
-      "id":"$ADJUSTMENT_ID",
+      "id":"$TAGGED_BAIL_ID",
       "bookingId":1204935,
       "sentenceSequence":1,
       "person":"A1032DZ",
@@ -110,7 +111,7 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
 
   fun stubEffectiveDaysForTaggedBailAdjustment() {
     stubFor(
-      post("/adjustments/$ADJUSTMENT_ID/effective-days")
+      post("/adjustments/$REMAND_ID/effective-days")
         .willReturn(
           aResponse()
             .withHeader("Content-Type", "application/json")
