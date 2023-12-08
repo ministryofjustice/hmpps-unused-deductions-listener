@@ -47,7 +47,7 @@ class AdjustmentsApiClient(@Qualifier("adjustmentsApiWebClient") private val web
     log.info("Create adjustment details for prisoner ${adjustment.person}")
     webClient.post()
       .uri("/adjustments")
-      .bodyValue(adjustment)
+      .bodyValue(listOf(adjustment))
       .retrieve()
       .toBodilessEntity()
       .block()!!
