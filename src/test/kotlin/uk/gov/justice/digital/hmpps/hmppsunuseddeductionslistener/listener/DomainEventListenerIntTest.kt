@@ -42,7 +42,7 @@ class DomainEventListenerIntTest : SqsIntegrationTestBase() {
     await untilAsserted {
       AdjustmentsApiExtension.adjustmentsApi.verify(
         WireMock.postRequestedFor(WireMock.urlEqualTo("/adjustments"))
-          .withRequestBody(WireMock.matchingJsonPath("days", WireMock.equalTo("10"))),
+          .withRequestBody(WireMock.matchingJsonPath("[0].days", WireMock.equalTo("10"))),
       )
       AdjustmentsApiExtension.adjustmentsApi.verify(WireMock.postRequestedFor(WireMock.urlEqualTo("/adjustments/$REMAND_ID/effective-days")))
     }
