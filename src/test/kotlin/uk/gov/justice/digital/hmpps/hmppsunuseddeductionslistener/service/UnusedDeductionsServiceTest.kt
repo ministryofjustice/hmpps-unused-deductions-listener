@@ -6,6 +6,7 @@ import org.mockito.InjectMocks
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.client.AdjustmentsApiClient
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.client.CalculateReleaseDatesApiClient
@@ -109,5 +110,12 @@ class UnusedDeductionsServiceTest {
     unusedDeductionsService.handleMessage(AdjustmentEvent(AdditionalInformation(id = UUID.randomUUID().toString(), offenderNo = person, source = "DPS", false)))
 
     verify(adjustmentsApiClient).deleteAdjustment(unusedDeductions.id!!)
+  }
+
+  @Test
+  fun unusedDeductions_wonthandleeventsthatarentlast() {
+    unusedDeductionsService.handleMessage(AdjustmentEvent(AdditionalInformation(id = UUID.randomUUID().toString(), offenderNo = "ASD", source = "DPS", false, false)))
+
+    verifyNoInteractions(adjustmentsApiClient)
   }
 }
