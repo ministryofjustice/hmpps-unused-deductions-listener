@@ -50,7 +50,7 @@ class UnusedDeductionsService(
   private fun setEffectiveDays(unusedDeductions: Int, deductions: List<Adjustment>) {
     var remainingDeductions = unusedDeductions
     // Remand becomes unused first..
-    deductions.sortedBy { it.adjustmentType.name }.forEach {
+    deductions.sortedWith(compareBy({ it.adjustmentType.name }, { it.createdDate!! })).forEach {
       val days = if (it.adjustmentType == AdjustmentType.TAGGED_BAIL) {
         it.days!!
       } else {

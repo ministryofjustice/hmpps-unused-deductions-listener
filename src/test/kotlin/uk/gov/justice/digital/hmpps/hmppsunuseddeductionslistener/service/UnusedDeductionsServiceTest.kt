@@ -15,6 +15,7 @@ import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.Adjustme
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentType
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.UnusedDeductionCalculationResponse
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
@@ -30,7 +31,7 @@ class UnusedDeductionsServiceTest {
     val person = "ABC123"
     val remand = Adjustment(
       UUID.randomUUID(), 1, 1, person, AdjustmentType.REMAND, LocalDate.now().minusDays(100),
-      LocalDate.now().minusDays(9), null, 90, 90,
+      LocalDate.now().minusDays(9), null, 90, LocalDateTime.now(), 90,
     )
     val taggedBail = remand.copy(id = UUID.randomUUID(), adjustmentType = AdjustmentType.TAGGED_BAIL, days = 90, daysBetween = null)
     val unusedDeductions = remand.copy(id = UUID.randomUUID(), adjustmentType = AdjustmentType.UNUSED_DEDUCTIONS, days = 10, effectiveDays = 10, daysBetween = null)
@@ -51,7 +52,7 @@ class UnusedDeductionsServiceTest {
     val person = "ABC123"
     val remand = Adjustment(
       UUID.randomUUID(), 1, 1, person, AdjustmentType.REMAND, LocalDate.now().minusDays(100),
-      LocalDate.now().minusDays(9), null, 90, 90,
+      LocalDate.now().minusDays(9), null, 90, LocalDateTime.now(), 90,
     )
     val taggedBail = remand.copy(id = UUID.randomUUID(), adjustmentType = AdjustmentType.TAGGED_BAIL, days = 90, daysBetween = null)
     val adjustments = listOf(remand, taggedBail)
@@ -79,7 +80,7 @@ class UnusedDeductionsServiceTest {
     val person = "ABC123"
     val remand = Adjustment(
       UUID.randomUUID(), 1, 1, person, AdjustmentType.REMAND, LocalDate.now().minusDays(100),
-      LocalDate.now().minusDays(9), null, 90, 80,
+      LocalDate.now().minusDays(9), null, 90, LocalDateTime.now(), 80,
     )
     val taggedBail = remand.copy(id = UUID.randomUUID(), adjustmentType = AdjustmentType.TAGGED_BAIL, days = 90, daysBetween = null)
     val unusedDeductions = remand.copy(id = UUID.randomUUID(), adjustmentType = AdjustmentType.UNUSED_DEDUCTIONS, days = 10, effectiveDays = 10, daysBetween = null)
@@ -100,7 +101,7 @@ class UnusedDeductionsServiceTest {
     val person = "ABC123"
     val unusedDeductions = Adjustment(
       UUID.randomUUID(), 1, 1, person, AdjustmentType.UNUSED_DEDUCTIONS, LocalDate.now().minusDays(100),
-      LocalDate.now().minusDays(9), null, 90, 90,
+      LocalDate.now().minusDays(9), null, 90, LocalDateTime.now(), 90,
     )
     val adjustments = listOf(unusedDeductions)
 
