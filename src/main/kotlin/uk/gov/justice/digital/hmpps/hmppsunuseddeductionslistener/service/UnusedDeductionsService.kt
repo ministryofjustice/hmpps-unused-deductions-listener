@@ -19,8 +19,8 @@ class UnusedDeductionsService(
 
   fun handleMessage(adjustmentEvent: AdjustmentEvent) {
     log.info("Received message for adjustment change")
-    val (_, offenderNo, source, effectiveDays, lastEvent) = adjustmentEvent.additionalInformation
-    if (source == "DPS" && !effectiveDays && lastEvent) {
+    val (_, offenderNo, source, unusedDeductions, lastEvent) = adjustmentEvent.additionalInformation
+    if (source == "DPS" && !unusedDeductions && lastEvent) {
       val adjustments = adjustmentsApiClient.getAdjustmentsByPerson(offenderNo)
       val deductions = adjustments
         .filter { it.adjustmentType === AdjustmentType.REMAND || it.adjustmentType === AdjustmentType.TAGGED_BAIL }
@@ -50,7 +50,7 @@ class UnusedDeductionsService(
   private fun setEffectiveDays(unusedDeductions: Int, deductions: List<Adjustment>) {
     var remainingDeductions = unusedDeductions
     // Remand becomes unused first..
-    deductions.sortedBy { it.adjustmentType.name }.forEach {
+    deductions.sortedWith(compareBy({ it.adjustmentType.name }, { it.createdDate!! })).forEach {
       val days = if (it.adjustmentType == AdjustmentType.TAGGED_BAIL) {
         it.days!!
       } else {
@@ -105,7 +105,7 @@ data class AdditionalInformation(
   val id: String,
   val offenderNo: String,
   val source: String,
-  val effectiveDays: Boolean = false,
+  val unusedDeductions: Boolean = false,
   val lastEvent: Boolean = true,
 )
 

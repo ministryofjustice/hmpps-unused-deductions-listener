@@ -1,6 +1,7 @@
 package uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 
 data class Adjustment(
@@ -13,5 +14,6 @@ data class Adjustment(
   val fromDate: LocalDate?,
   val days: Int?,
   val daysBetween: Int?,
+  val createdDate: LocalDateTime = LocalDateTime.now(),
   val effectiveDays: Int? = null,
 )
