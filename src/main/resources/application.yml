@@ -35,7 +35,6 @@ spring:
           hmpps-auth:
             token-uri: ${api.base.url.oauth}/oauth/token
 
-
 server:
   port: 8080
   servlet:
