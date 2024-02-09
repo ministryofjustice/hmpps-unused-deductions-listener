@@ -33,16 +33,16 @@ class UnusedDeductionsService(
       val allDeductionsEnteredInDps = deductions.all { it.days != null || it.daysBetween != null }
 
       if (allDeductionsEnteredInDps) {
-        val (unusedDeductions) =
-          calculateReleaseDatesApiClient.calculateUnusedDeductions(adjustments, offenderNo)
+        val calculatedUnusedDeductions =
+          calculateReleaseDatesApiClient.calculateUnusedDeductions(adjustments, offenderNo).unusedDeductions
 
-        if (unusedDeductions == null) {
+        if (calculatedUnusedDeductions == null) {
           // Couldn't calculate.
           return
         }
 
-        setUnusedDeductions(unusedDeductions, adjustments, deductions)
-        setEffectiveDays(unusedDeductions, deductions)
+        setUnusedDeductions(calculatedUnusedDeductions, adjustments, deductions)
+        setEffectiveDays(calculatedUnusedDeductions, deductions)
       }
     }
   }
