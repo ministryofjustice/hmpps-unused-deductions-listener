@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.Adjustment
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentEffectiveDays
+import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.EditableAdjustmentDto
 import java.util.UUID
 
 @Service
@@ -33,7 +34,7 @@ class AdjustmentsApiClient(@Qualifier("adjustmentsApiWebClient") private val web
       .block()!!
   }
 
-  fun updateAdjustment(adjustment: Adjustment) {
+  fun updateAdjustment(adjustment: EditableAdjustmentDto) {
     log.info("Updating adjustment details for prisoner ${adjustment.person}")
     webClient.put()
       .uri("/adjustments/{adjustmentId}", adjustment.id)
@@ -43,7 +44,7 @@ class AdjustmentsApiClient(@Qualifier("adjustmentsApiWebClient") private val web
       .block()!!
   }
 
-  fun createAdjustment(adjustment: Adjustment) {
+  fun createAdjustment(adjustment: EditableAdjustmentDto) {
     log.info("Create adjustment details for prisoner ${adjustment.person}")
     webClient.post()
       .uri("/adjustments")
