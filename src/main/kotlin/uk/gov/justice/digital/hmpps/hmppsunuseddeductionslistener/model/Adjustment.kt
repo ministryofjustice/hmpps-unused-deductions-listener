@@ -14,7 +14,7 @@ data class Adjustment(
   val fromDate: LocalDate?,
   val daysTotal: Int,
   val effectiveDays: Int,
-  val prisonId: String,
+  val prisonId: String? = null,
   val createdDate: LocalDateTime = LocalDateTime.now(),
   val taggedBail: TaggedBailDto? = null,
   val remand: RemandDto? = null,

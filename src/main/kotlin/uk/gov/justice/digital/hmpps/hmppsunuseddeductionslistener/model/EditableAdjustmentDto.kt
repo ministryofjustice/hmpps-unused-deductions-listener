@@ -11,6 +11,6 @@ data class EditableAdjustmentDto(
   val toDate: LocalDate?,
   val fromDate: LocalDate?,
   val days: Int?,
-  val prisonId: String,
+  val prisonId: String? = null,
   val sentenceSequence: Int? = null,
 )
