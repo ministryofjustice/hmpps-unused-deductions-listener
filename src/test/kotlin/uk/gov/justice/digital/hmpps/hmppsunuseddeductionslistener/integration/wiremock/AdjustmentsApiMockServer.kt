@@ -58,20 +58,16 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
       "adjustmentType":"REMAND",
       "toDate":"2023-01-20",
       "fromDate":"2023-01-10",
+      "days":null,
       "additionalDaysAwarded":null,
       "unlawfullyAtLarge":null,
-      "prisonId":"KMI",
+      "prisonId":null,
       "prisonName":null,
       "lastUpdatedBy":"NOMIS",
       "status":"ACTIVE",
       "lastUpdatedDate":"2023-10-26T09:57:36.319803",
-      "daysTotal":11,
       "effectiveDays":11,
-      "remand": {
-        "chargeId": [
-           3933870
-        ]
-      }
+      "daysBetween":11
    },
    {
       "id":"$TAGGED_BAIL_ID",
@@ -81,18 +77,16 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
       "adjustmentType":"TAGGED_BAIL",
       "toDate":null,
       "fromDate":"2023-01-10",
+      "days":24,
       "additionalDaysAwarded":null,
       "unlawfullyAtLarge":null,
-      "prisonId":"KMI",
+      "prisonId":null,
       "prisonName":null,
       "lastUpdatedBy":"NOMIS",
       "status":"ACTIVE",
       "lastUpdatedDate":"2023-10-26T10:01:30.042687",
-      "daysTotal":24,
       "effectiveDays":24,
-      "taggedBail": {
-        "caseSequence": 1
-      }
+      "daysBetween":null
    }
    ]
               """,
