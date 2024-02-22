@@ -30,7 +30,7 @@ class UnusedDeductionsService(
         return
       }
 
-      val allDeductionsEnteredInDps = deductions.all { it.days != null || it.daysBetween != null }
+      val allDeductionsEnteredInDps = deductions.all { it.remand != null || it.taggedBail != null }
 
       if (allDeductionsEnteredInDps) {
         val calculatedUnusedDeductions =
@@ -51,13 +51,8 @@ class UnusedDeductionsService(
     var remainingDeductions = unusedDeductions
     // Remand becomes unused first..
     deductions.sortedWith(compareBy({ it.adjustmentType.name }, { it.createdDate!! })).forEach {
-      val days = if (it.adjustmentType == AdjustmentType.TAGGED_BAIL) {
-        it.days!!
-      } else {
-        it.daysBetween!!
-      }
-      val effectiveDays = max(days - remainingDeductions, 0)
-      remainingDeductions -= days
+      val effectiveDays = max(it.days!! - remainingDeductions, 0)
+      remainingDeductions -= it.days
       remainingDeductions = max(remainingDeductions, 0)
       if (effectiveDays != it.effectiveDays) {
         adjustmentsApiClient.updateEffectiveDays(AdjustmentEffectiveDays(it.id!!, effectiveDays, it.person))
