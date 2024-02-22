@@ -8,7 +8,6 @@ import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.client.Calcula
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.Adjustment
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentEffectiveDays
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentType
-import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.EditableAdjustmentDto
 import kotlin.math.max
 
 @Service
@@ -52,8 +51,8 @@ class UnusedDeductionsService(
     var remainingDeductions = unusedDeductions
     // Remand becomes unused first..
     deductions.sortedWith(compareBy({ it.adjustmentType.name }, { it.createdDate!! })).forEach {
-      val effectiveDays = max(it.daysTotal - remainingDeductions, 0)
-      remainingDeductions -= it.daysTotal
+      val effectiveDays = max(it.days!! - remainingDeductions, 0)
+      remainingDeductions -= it.days
       remainingDeductions = max(remainingDeductions, 0)
       if (effectiveDays != it.effectiveDays) {
         adjustmentsApiClient.updateEffectiveDays(AdjustmentEffectiveDays(it.id!!, effectiveDays, it.person))
@@ -72,15 +71,15 @@ class UnusedDeductionsService(
       if (unusedDeductions == 0) {
         adjustmentsApiClient.deleteAdjustment(unusedDeductionsAdjustment.id!!)
       } else {
-        if (unusedDeductionsAdjustment.daysTotal != unusedDeductions) {
-          adjustmentsApiClient.updateAdjustment(toEditableAdjustment(unusedDeductionsAdjustment).copy(days = unusedDeductions))
+        if (unusedDeductionsAdjustment.days != unusedDeductions) {
+          adjustmentsApiClient.updateAdjustment(unusedDeductionsAdjustment.copy(days = unusedDeductions))
         }
       }
     } else {
       if (unusedDeductions > 0) {
         val aDeduction = deductions[0]
         adjustmentsApiClient.createAdjustment(
-          toEditableAdjustment(aDeduction).copy(
+          aDeduction.copy(
             id = null,
             fromDate = null,
             toDate = null,
@@ -90,20 +89,6 @@ class UnusedDeductionsService(
         )
       }
     }
-  }
-
-  private fun toEditableAdjustment(adjustment: Adjustment): EditableAdjustmentDto {
-    return EditableAdjustmentDto(
-      id = adjustment.id,
-      person = adjustment.person,
-      days = adjustment.daysTotal,
-      fromDate = adjustment.fromDate,
-      toDate = adjustment.toDate,
-      adjustmentType = adjustment.adjustmentType,
-      sentenceSequence = adjustment.sentenceSequence,
-      bookingId = adjustment.bookingId,
-      prisonId = adjustment.prisonId,
-    )
   }
 
   private companion object {
