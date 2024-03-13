@@ -19,5 +19,7 @@ generic-prometheus-alerts:
   sqsAlertsQueueNames:
     - "farsight-devs-preprod-hmpps_unused_deductions_queue"
     - "farsight-devs-preprod-hmpps_unused_deductions_dlq"
+  sqsAlertsOldestThreshold: 2
+  sqsAlertsTotalMessagesThreshold: 1
   alertSeverity: legacy-replacement-alerts-non-prod
 
