@@ -13,6 +13,13 @@ generic-service:
     enabled: true
     host: app-hostname.local # override per environment
     tlsSecretName: hmpps-unused-deductions-listener-cert
+    annotations:
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        server_tokens off;
+        location /queue-admin/retry-all-dlqs {
+          deny all;
+          return 401;
+        }
 
   # Environment variables to load into the deployment
   env:
@@ -41,6 +48,9 @@ generic-service:
   allowlist:
     groups:
       - internal
+
+  retryDlqCronjob:
+    enabled: true
 
 generic-prometheus-alerts:
   targetApplication: hmpps-unused-deductions-listener

@@ -25,6 +25,7 @@ class ResourceServerConfiguration {
           "/health/**",
           "/info",
           "/startup",
+          "/queue-admin/retry-all-dlqs",
         ).forEach { authorize(it, permitAll) }
         authorize(anyExchange, authenticated)
       }
