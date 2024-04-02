@@ -22,7 +22,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk9")
 
-  testImplementation("org.wiremock:wiremock-standalone:3.4.2")
+  testImplementation("org.wiremock:wiremock-standalone:3.5.2")
   testImplementation("org.mockito:mockito-inline:5.2.0")
   testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
   testImplementation("org.testcontainers:localstack:1.19.7")
