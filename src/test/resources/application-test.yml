@@ -26,7 +26,7 @@ hmpps.sqs:
       queueName: "unuseddeductions-${random.uuid}"
       dlqName: "unuseddeductions-dlq-${random.uuid}"
       subscribeTopicId: domainevents
-      subscribeFilter: "{\"eventType\":[\"release-date-adjustments.adjustment.inserted\", \"release-date-adjustments.adjustment.updated\", \"release-date-adjustments.adjustment.deleted\"]}"
+      subscribeFilter: "{\"eventType\":[\"release-date-adjustments.adjustment.inserted\", \"release-date-adjustments.adjustment.updated\", \"release-date-adjustments.adjustment.deleted\", \"prisoner-offender-search.prisoner.updated\"]}"
       dlqMaxReceiveCount: 3
       visibilityTimeout: 120
   topics:

@@ -7,6 +7,7 @@ import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.client.Adjustm
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.client.CalculateReleaseDatesApiClient
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.Adjustment
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentEffectiveDays
+import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentSource
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.model.AdjustmentType
 import kotlin.math.max
 
@@ -17,11 +18,11 @@ class UnusedDeductionsService(
 
 ) {
 
-  fun handleMessage(adjustmentEvent: AdjustmentEvent) {
-    log.info("Received message for adjustment change")
-    val (_, offenderNo, source, unusedDeductions, lastEvent) = adjustmentEvent.additionalInformation
-    if (source == "DPS" && !unusedDeductions && lastEvent) {
-      val adjustments = adjustmentsApiClient.getAdjustmentsByPerson(offenderNo)
+  fun recalculateUnusedDeductions(offenderNo: String) {
+    val adjustments = adjustmentsApiClient.getAdjustmentsByPerson(offenderNo)
+    val anyDpsAdjustments = adjustments.any { it.source == AdjustmentSource.DPS }
+    if (anyDpsAdjustments) {
+      log.info("Recalculating unused deductions from $offenderNo")
       val deductions = adjustments
         .filter { it.adjustmentType === AdjustmentType.REMAND || it.adjustmentType === AdjustmentType.TAGGED_BAIL }
 
@@ -30,7 +31,7 @@ class UnusedDeductionsService(
         return
       }
 
-      val allDeductionsEnteredInDps = deductions.all { it.remand != null || it.taggedBail != null }
+      val allDeductionsEnteredInDps = deductions.all { it.source == AdjustmentSource.DPS }
 
       if (allDeductionsEnteredInDps) {
         val calculatedUnusedDeductions =
@@ -95,15 +96,3 @@ class UnusedDeductionsService(
     val log: Logger = LoggerFactory.getLogger(this::class.java)
   }
 }
-
-data class AdditionalInformation(
-  val id: String,
-  val offenderNo: String,
-  val source: String,
-  val unusedDeductions: Boolean = false,
-  val lastEvent: Boolean = true,
-)
-
-data class AdjustmentEvent(
-  val additionalInformation: AdditionalInformation,
-)

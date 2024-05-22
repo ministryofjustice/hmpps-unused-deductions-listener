@@ -17,4 +17,5 @@ data class Adjustment(
   val effectiveDays: Int? = null,
   val taggedBail: TaggedBailDto? = null,
   val remand: RemandDto? = null,
+  val source: AdjustmentSource? = null,
 )
