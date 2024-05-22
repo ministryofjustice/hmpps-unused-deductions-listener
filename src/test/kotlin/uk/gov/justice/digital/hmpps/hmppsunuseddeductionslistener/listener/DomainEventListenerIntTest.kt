@@ -50,4 +50,37 @@ class DomainEventListenerIntTest : SqsIntegrationTestBase() {
 
   fun sentencingAdjustmentMessagePayload(adjustmentId: String, nomsNumber: String, eventType: String, source: String = "DPS") =
     """{"eventType":"$eventType", "additionalInformation": {"id":"$adjustmentId", "offenderNo": "$nomsNumber", "source": "$source"}}"""
+
+  @Test
+  fun handlePrisonerSearchEvent() {
+    val eventType = "prisoner-offender-search.prisoner.updated"
+    awsSnsClient.publish(
+      PublishRequest.builder().topicArn(topicArn)
+        .message(prisonerSearchPayload(OFFENDER_NUMBER, eventType))
+        .messageAttributes(
+          mapOf(
+            "eventType" to MessageAttributeValue.builder().dataType("String")
+              .stringValue(eventType).build(),
+          ),
+        ).build(),
+    ).get()
+
+    await untilAsserted {
+      assertThat(awsSqsUnusedDeductionsClient!!.countAllMessagesOnQueue(unusedDeductionsQueueUrl).get()).isEqualTo(1)
+    }
+    await untilAsserted {
+      assertThat(awsSqsUnusedDeductionsClient!!.countAllMessagesOnQueue(unusedDeductionsQueueUrl).get()).isEqualTo(0)
+    }
+
+    await untilAsserted {
+      AdjustmentsApiExtension.adjustmentsApi.verify(
+        WireMock.postRequestedFor(WireMock.urlEqualTo("/adjustments"))
+          .withRequestBody(WireMock.matchingJsonPath("[0].days", WireMock.equalTo("10"))),
+      )
+      AdjustmentsApiExtension.adjustmentsApi.verify(WireMock.postRequestedFor(WireMock.urlEqualTo("/adjustments/$REMAND_ID/effective-days")))
+    }
+  }
+
+  private fun prisonerSearchPayload(offenderNumber: String, eventType: String): String? =
+    """{"eventType":"$eventType", "additionalInformation": {"nomsNumber": "$offenderNumber", "categoriesChanged": ["SENTENCE"]}}"""
 }

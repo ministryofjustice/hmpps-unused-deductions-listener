@@ -67,6 +67,7 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
       "status":"ACTIVE",
       "lastUpdatedDate":"2023-10-26T09:57:36.319803",
       "effectiveDays":11,
+      "source": "DPS",
       "remand": {
         "chargeId": [
            3933870
@@ -90,6 +91,7 @@ class AdjustmentsApiMockServer : WireMockServer(WIREMOCK_PORT) {
       "status":"ACTIVE",
       "lastUpdatedDate":"2023-10-26T10:01:30.042687",
       "effectiveDays":24,
+      "source": "DPS",
       "taggedBail": {
         "caseSequence": 1
       }

@@ -9,13 +9,13 @@ import kotlinx.coroutines.future.future
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.service.UnusedDeductionsService
+import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.service.EventService
 import java.util.concurrent.CompletableFuture
 
 @Service
 class DomainEventListener(
   private val objectMapper: ObjectMapper,
-  private val unusedDeductionsService: UnusedDeductionsService,
+  private val eventService: EventService,
 ) {
 
   private companion object {
@@ -44,7 +44,10 @@ class DomainEventListener(
       "release-date-adjustments.adjustment.updated",
       "release-date-adjustments.adjustment.deleted",
       ->
-        unusedDeductionsService.handleMessage(objectMapper.readValue(message))
+        eventService.handleAdjustmentMessage(objectMapper.readValue(message))
+      "prisoner-offender-search.prisoner.updated",
+      ->
+        eventService.handlePrisonerSearchEvent(objectMapper.readValue(message))
 
       else -> log.info("Received a message I wasn't expecting: {}", eventType)
     }
