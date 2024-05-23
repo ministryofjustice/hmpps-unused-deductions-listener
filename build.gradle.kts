@@ -1,6 +1,6 @@
 plugins {
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "5.15.6"
-  kotlin("plugin.spring") version "1.9.23"
+  kotlin("plugin.spring") version "1.9.24"
   id("se.patrikerdes.use-latest-versions") version "0.2.18"
 }
 
@@ -22,10 +22,10 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk9")
 
-  testImplementation("org.wiremock:wiremock-standalone:3.5.3")
+  testImplementation("org.wiremock:wiremock-standalone:3.6.0")
   testImplementation("org.mockito:mockito-inline:5.2.0")
   testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-  testImplementation("org.testcontainers:localstack:1.19.7")
+  testImplementation("org.testcontainers:localstack:1.19.8")
   testImplementation("org.awaitility:awaitility-kotlin:4.2.1")
 }
 
