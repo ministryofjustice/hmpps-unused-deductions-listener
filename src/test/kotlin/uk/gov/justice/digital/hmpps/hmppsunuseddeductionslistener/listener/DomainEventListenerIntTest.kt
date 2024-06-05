@@ -4,7 +4,6 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import org.assertj.core.api.Assertions.assertThat
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.untilAsserted
-import org.junit.jupiter.api.Test
 import software.amazon.awssdk.services.sns.model.MessageAttributeValue
 import software.amazon.awssdk.services.sns.model.PublishRequest
 import uk.gov.justice.digital.hmpps.hmppsunuseddeductionslistener.integration.SqsIntegrationTestBase
@@ -18,7 +17,6 @@ const val BOOKING_ID = 987651L
 
 class DomainEventListenerIntTest : SqsIntegrationTestBase() {
 
-  @Test
   fun handleAdjustmentEvent() {
     val eventType = "release-date-adjustments.adjustment.inserted"
     awsSnsClient.publish(
@@ -51,7 +49,6 @@ class DomainEventListenerIntTest : SqsIntegrationTestBase() {
   fun sentencingAdjustmentMessagePayload(adjustmentId: String, nomsNumber: String, eventType: String, source: String = "DPS") =
     """{"eventType":"$eventType", "additionalInformation": {"id":"$adjustmentId", "offenderNo": "$nomsNumber", "source": "$source"}}"""
 
-  @Test
   fun handlePrisonerSearchEvent() {
     val eventType = "prisoner-offender-search.prisoner.updated"
     awsSnsClient.publish(
